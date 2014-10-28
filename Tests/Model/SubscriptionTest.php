@@ -2,17 +2,17 @@
 
 namespace FJL\ChargifyBundle\Tests\Model;
 
-use FJL\ChargifyBundle\Model\User;
+use FJL\ChargifyBundle\Model\Subscription;
 
 class SubscriptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testProductHandle()
+    public function testActivatedAt()
     {
         $subscription = $this->getSubscription();
-        $this->assertNull($subscription->getProductHandle());
+        $this->assertNull($subscription->getActivatedAt());
 
-        $subscription->setProductHandle('product-handle');
-        $this->assertEquals('product-handle', $subscription->getProductHandle());
+        $subscription->setActivatedAt('01/01/2014');
+        $this->assertEquals('01/01/2014', $subscription->getActivatedAt()->format('m/d/Y'));
     }
 
     /**
@@ -20,6 +20,6 @@ class SubscriptionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getSubscription()
     {
-        return $this->getMockForAbstractClass('FJL\SubscriptionBundle\Model\Subscription');
+        return new Subscription();
     }
 }
