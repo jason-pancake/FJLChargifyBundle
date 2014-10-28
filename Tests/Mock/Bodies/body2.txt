@@ -79,25 +79,26 @@
             "name":"Individual Plans"
          }
       },
-      "credit_card":{
+      "bank_account":{
          "billing_address":"123 Maple Drive",
          "billing_address_2":null,
          "billing_city":"",
          "billing_country":"",
          "billing_state":"",
          "billing_zip":"12345",
-         "card_type":"bogus",
-         "current_vault":"bogus",
+         "bank_account_holder_type":"personal",
+         "bank_account_type":"checking",
+         "bank_name":"Suntrust",
+         "current_vault":"authorizenet",
          "customer_id":6676103,
          "customer_vault_token":"",
-         "expiration_month":1,
-         "expiration_year":2015,
-         "first_name":"",
-         "id":4371069,
-         "last_name":"",
-         "masked_card_number":"XXXX-XXXX-XXXX-1",
-         "vault_token":"1",
-         "payment_type":"credit_card"
+         "first_name":"John",
+         "last_name":"Doe",
+         "id":3541073,
+         "masked_bank_account_number":"XXXXXXX1111",
+         "masked_bank_routing_number":"XXXXXXX1111",
+         "payment_type":"bank_account",
+         "vault_token":""
       }
    }
 }

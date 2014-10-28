@@ -3,17 +3,17 @@
 namespace FJL\ChargifyBundle\Model;
 
 use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Exception\ClientException;
+use Guzzle\Http\Exception\RequestException;
+use Guzzle\Http\Exception\ClientErrorResponseException;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
     protected $client;
-    protected $logger;
 
-    public function __construct(ClientInterface $client, $logger = null)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
-        $this->logger = $logger;
     }
 
     public function createSubscription()
@@ -23,25 +23,24 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function findSubscriptionById($id)
     {
+        //Generate the request
         $request = $this->client->get( '/subscriptions/'.$id.'.json', array(
             'Content-Type' => 'application/json',
         ));
 
-        try {
-            $response = $request->send()->json();
+        //Get the response
+        $response = $request->send()->json();
 
-            $subscription = new Subscription();
-            $subscription->setId($response['subscription']['id']);
+        //Instantiate a new subscription
+        $subscription = $this->createSubscription();
 
-            return $subscription;
-        }
-        catch(ClientException $e) {
-            if($this->logger) {
-                $this->logger->error(sprintf('Find subscription failed. Subscription id: %s', $id));
-                $this->logger->error('Request: ' . $e->getRequest());
-                $this->logger->error('Response: ' . $e->getResponse());
-            }
-        }
+        //Instanitate the hydrator object
+        $hydrator = new ClassMethods();
+
+        //Hydrate the subscription object with the response
+        $hydrator->hydrate($response['subscription'], $subscription);
+
+        return $subscription;
     }
 
     public function updateSubscription(Subscription $subscription)

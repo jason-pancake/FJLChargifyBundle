@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-use FJL\ChargifyBundle\Model\Customer;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Subscription
 {
@@ -47,6 +47,57 @@ class Subscription
     protected $paymentProfile;
     protected $customer;
     protected $product;
+    protected $creditCard;
+    protected $bankAccount;
+
+    /**
+     * @param mixed $bankAccount
+     */
+    public function setBankAccount($bankAccount)
+    {
+        if($bankAccount instanceof BankAccount) {
+            $this->bankAccount = $bankAccount;
+        }
+
+        if(is_array($bankAccount)) {
+            $this->bankAccount = new BankAccount();
+
+            $hydrator = new ClassMethods();
+            $hydrator->hydrate($bankAccount, $this->bankAccount);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBankAccount()
+    {
+        return $this->bankAccount;
+    }
+
+    /**
+     * @param mixed $creditCard
+     */
+    public function setCreditCard($creditCard)
+    {
+        if($creditCard instanceof CreditCard) {
+            $this->creditCard = $creditCard;
+        }
+
+        if(is_array($creditCard)) {
+            $this->creditCard = new CreditCard();
+            $hydrator = new ClassMethods();
+            $hydrator->hydrate($creditCard, $this->creditCard);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreditCard()
+    {
+        return $this->creditCard;
+    }
 
     /**
      * @param mixed $productHandle
@@ -339,9 +390,17 @@ class Subscription
     /**
      * @param mixed $customer
      */
-    public function setCustomer(Customer $customer)
+    public function setCustomer($customer)
     {
-        $this->customer = $customer;
+        if($customer instanceof Customer) {
+            $this->customer = $customer;
+        }
+        if(is_array($customer)) {
+            $this->customer = new Customer();
+
+            $hydrator = new ClassMethods();
+            $hydrator->hydrate($customer, $this->customer);
+        }
     }
 
     /**
@@ -469,7 +528,16 @@ class Subscription
      */
     public function setProduct($product)
     {
-        $this->product = $product;
+        if($product instanceof Product) {
+            $this->product = $product;
+        }
+
+        if(is_array($product)) {
+            $this->product = new Product();
+            $hydrator = new ClassMethods();
+            $hydrator->hydrate($product, $this->product);
+        }
+
     }
 
     /**
