@@ -55,10 +55,11 @@ class Subscription
 
     public function __construct()
     {
-        $this->customer    = new Customer();
-        $this->creditCard  = new CreditCard();
-        $this->bankAccount = new BankAccount();
-        $this->product     = new Product();
+        $this->customer             = new Customer();
+        $this->creditCard           = new CreditCard();
+        $this->bankAccount          = new BankAccount();
+        $this->product              = new Product();
+        $this->creditCardAttributes = new CreditCardAttributes();
     }
 
     public function populate($data)
@@ -98,6 +99,7 @@ class Subscription
                 'product_change_delayed' => $this->productChangeDelayed,
                 'customer_attributes'    => $this->customerAttributes->getArrayCopy(),
                 'customer'               => $this->customer->getArrayCopy(),
+                'credit_card_attributes' => $this->creditCardAttributes->getArrayCopy(),
             ),
         );
     }

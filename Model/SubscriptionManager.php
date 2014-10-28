@@ -48,8 +48,6 @@ class SubscriptionManager implements SubscriptionManagerInterface
     {
         $hydrator = new ArraySerializable();
 
-        echo json_encode($hydrator->extract($subscription));
-
         if($subscription->getId() == '') {
             $request = $this->client->post( '/subscriptions.json', array(
                 'Content-Type' => 'application/json',

@@ -8,6 +8,7 @@ use Guzzle\Http\Message\Response;
 use Guzzle\Http\Client;
 use Guzzle\Http\EntityBody;
 use FJL\ChargifyBundle\Model\CustomerAttributes;
+use FJL\ChargifyBundle\Model\CreditCardAttributes;
 
 class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -156,29 +157,34 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
     {
         $mockPlugin = new MockPlugin();
 
-        $mockResponse = new Response(404);
+        $mockResponse = new Response(201);
         $mockResponse->setHeaders(array(
-                'Cache-Control'             => 'must-revalidate, private, max-age=0',
+                'Cache-Control'             => 'max-age=0, private, must-revalidate',
                 'Connection'                => 'keep-alive',
                 'Content-Type'              => 'application/json; charset=utf-8',
-                'Content-Length'            => '1',
-                'Date'                      => 'Tue, 28 Oct 2014 16:36:16 GMT',
+                'Content-Length'            => '2384',
+                'Date'                      => 'Tue, 28 Oct 2014 23:24:55 GMT',
+                'Etag'                      => '95774fd71f33cc30787531d3d9fa3ace',
+                'Location'                  => 'https://xxxxxxxxxxx.chargify.com/subscriptions/xxxxxxxxxxxx',
                 'P3p'                       => 'CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"',
                 'Server'                    => 'nginx + Phusion Passenger',
-                'Status'                    => '404 Not Found',
+                'Status'                    => '201 Created',
+                'Strict-Transport-Security' => 'max-age=31536000',
+                'X-Content-Type-Options'    => 'nosniff',
                 'X-Frame-Options'           => 'SAMEORIGIN',
                 'X-Powered-By'              => 'Phusion Passenger',
-                'X-Rack-Cache'              => 'miss',
+                'X-Rack-Cache'              => 'invalidate, pass',
                 'X-Ratelimit-Limit'         => '1000000',
-                'X-Ratelimit-Remaining'     => '999998',
+                'X-Ratelimit-Remaining'     => '999997',
                 'X-Ratelimit-Reset'         => '1414540800',
-                'X-Request-Id'              => 'd34921f9-a3c2-4b74-ad06-9373ccb3c21b',
-                'X-Runtime'                 => '0.315852',
+                'X-Request-Id'              => '6e721948-7152-4bea-b211-6349028f1197',
                 'X-Ua-Compatible'           => 'IE=Edge,chrome=1',
+                'X-Runtime'                 => '0.315852',
+                'X-Xss-Protection'          => '1; mode=block'
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body2.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body3.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);

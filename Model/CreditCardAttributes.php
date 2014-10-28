@@ -33,6 +33,29 @@ class CreditCardAttributes
         }
     }
 
+    public function getArrayCopy()
+    {
+        return array(
+            'first_name'           => $this->firstName,
+            'last_name'            => $this->lastName,
+            'full_number'          => $this->fullNumber,
+            'expiration_month'     => $this->expirationMonth,
+            'expiration_year'      => $this->expirationYear,
+            'cvv'                  => $this->cvv,
+            'billing_address'      => $this->billingAddress,
+            'billing_address_2'    => $this->billingAddress2,
+            'billing_city'         => $this->billingCity,
+            'billing_state'        => $this->billingState,
+            'billing_zip'          => $this->billingZip,
+            'billing_country'      => $this->billingCountry,
+            'vault_token'          => $this->vaultToken,
+            'customer_vault_token' => $this->customerVaultToken,
+            'current_vault'        => $this->currentVault,
+            'last_four'            => $this->lastFour,
+            'card_type'            => $this->cardType,
+        );
+    }
+
     /**
      * @param mixed $billingAddress
      */
