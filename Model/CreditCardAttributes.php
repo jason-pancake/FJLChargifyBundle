@@ -2,27 +2,26 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class BankAccount
+class CreditCardAttributes
 {
-    protected $bankAccount;
-    protected $bankAccountType;
-    protected $bankName;
+    //Input Attributes
+    protected $firstName;
+    protected $lastName;
+    protected $fullNumber;
+    protected $expirationMonth;
+    protected $expirationYear;
+    protected $cvv;
     protected $billingAddress;
     protected $billingAddress2;
     protected $billingCity;
     protected $billingState;
     protected $billingZip;
     protected $billingCountry;
-    protected $currentVault;
-    protected $customerId;
-    protected $customerVaultToken;
-    protected $firstName;
-    protected $lastName;
-    protected $id;
-    protected $maskedBankAccountNumber;
-    protected $maskedBankRoutingNumber;
-    protected $paymentType;
     protected $vaultToken;
+    protected $customerVaultToken;
+    protected $currentVault;
+    protected $lastFour;
+    protected $cardType;
 
     public function populate($data)
     {
@@ -32,54 +31,6 @@ class BankAccount
                 $this->$method($value);
             }
         }
-    }
-
-    /**
-     * @param mixed $bankAccount
-     */
-    public function setBankAccount($bankAccount)
-    {
-        $this->bankAccount = $bankAccount;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBankAccount()
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param mixed $bankAccountType
-     */
-    public function setBankAccountType($bankAccountType)
-    {
-        $this->bankAccountType = $bankAccountType;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBankAccountType()
-    {
-        return $this->bankAccountType;
-    }
-
-    /**
-     * @param mixed $bankName
-     */
-    public function setBankName($bankName)
-    {
-        $this->bankName = $bankName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBankName()
-    {
-        return $this->bankName;
     }
 
     /**
@@ -179,6 +130,22 @@ class BankAccount
     }
 
     /**
+     * @param mixed $cardType
+     */
+    public function setCardType($cardType)
+    {
+        $this->cardType = $cardType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCardType()
+    {
+        return $this->cardType;
+    }
+
+    /**
      * @param mixed $currentVault
      */
     public function setCurrentVault($currentVault)
@@ -192,22 +159,6 @@ class BankAccount
     public function getCurrentVault()
     {
         return $this->currentVault;
-    }
-
-    /**
-     * @param mixed $customerId
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customerId = $customerId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCustomerId()
-    {
-        return $this->customerId;
     }
 
     /**
@@ -227,6 +178,54 @@ class BankAccount
     }
 
     /**
+     * @param mixed $cvv
+     */
+    public function setCvv($cvv)
+    {
+        $this->cvv = $cvv;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCvv()
+    {
+        return $this->cvv;
+    }
+
+    /**
+     * @param mixed $expirationMonth
+     */
+    public function setExpirationMonth($expirationMonth)
+    {
+        $this->expirationMonth = $expirationMonth;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpirationMonth()
+    {
+        return $this->expirationMonth;
+    }
+
+    /**
+     * @param mixed $expirationYear
+     */
+    public function setExpirationYear($expirationYear)
+    {
+        $this->expirationYear = $expirationYear;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpirationYear()
+    {
+        return $this->expirationYear;
+    }
+
+    /**
      * @param mixed $firstName
      */
     public function setFirstName($firstName)
@@ -243,19 +242,35 @@ class BankAccount
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $fullNumber
      */
-    public function setId($id)
+    public function setFullNumber($fullNumber)
     {
-        $this->id = $id;
+        $this->fullNumber = $fullNumber;
     }
 
     /**
      * @return mixed
      */
-    public function getId()
+    public function getFullNumber()
     {
-        return $this->id;
+        return $this->fullNumber;
+    }
+
+    /**
+     * @param mixed $lastFour
+     */
+    public function setLastFour($lastFour)
+    {
+        $this->lastFour = $lastFour;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastFour()
+    {
+        return $this->lastFour;
     }
 
     /**
@@ -272,54 +287,6 @@ class BankAccount
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * @param mixed $maskedBankAccountNumber
-     */
-    public function setMaskedBankAccountNumber($maskedBankAccountNumber)
-    {
-        $this->maskedBankAccountNumber = $maskedBankAccountNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMaskedBankAccountNumber()
-    {
-        return $this->maskedBankAccountNumber;
-    }
-
-    /**
-     * @param mixed $maskedBankRoutingNumber
-     */
-    public function setMaskedBankRoutingNumber($maskedBankRoutingNumber)
-    {
-        $this->maskedBankRoutingNumber = $maskedBankRoutingNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMaskedBankRoutingNumber()
-    {
-        return $this->maskedBankRoutingNumber;
-    }
-
-    /**
-     * @param mixed $paymentType
-     */
-    public function setPaymentType($paymentType)
-    {
-        $this->paymentType = $paymentType;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPaymentType()
-    {
-        return $this->paymentType;
     }
 
     /**

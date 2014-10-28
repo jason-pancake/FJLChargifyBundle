@@ -5,6 +5,7 @@ namespace FJL\ChargifyBundle\Model;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Exception\RequestException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Zend\Stdlib\Hydrator\ArraySerializable;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 class SubscriptionManager implements SubscriptionManagerInterface
@@ -35,7 +36,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription = $this->createSubscription();
 
         //Instanitate the hydrator object
-        $hydrator = new ClassMethods();
+        $hydrator = new ArraySerializable();
 
         //Hydrate the subscription object with the response
         $hydrator->hydrate($response['subscription'], $subscription);
@@ -45,9 +46,27 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function updateSubscription(Subscription $subscription)
     {
-        if(!$subscription->getId())
-        {
+        $hydrator = new ArraySerializable();
 
+        echo json_encode($hydrator->extract($subscription));
+
+        if($subscription->getId() == '') {
+            $request = $this->client->post( '/subscriptions.json', array(
+                'Content-Type' => 'application/json',
+            ),
+            json_encode( $hydrator->extract($subscription) ) );
         }
+        else {
+            $request = $this->client->put( '/subscriptions/'.$subscription->getId().'.json', array(
+                'Content-Type' => 'application/json',
+            ),
+            json_encode( $hydrator->extract($subscription) ) );
+        }
+
+        $response = $request->send()->json();
+
+        $hydrator->hydrate($response['subscription'], $subscription);
+
+        return $subscription;
     }
 }

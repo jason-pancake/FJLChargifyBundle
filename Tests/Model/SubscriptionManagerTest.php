@@ -7,8 +7,7 @@ use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Client;
 use Guzzle\Http\EntityBody;
-use FJL\ChargifyBundle\Model\Subscription;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use FJL\ChargifyBundle\Model\CustomerAttributes;
 
 class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -151,5 +150,60 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $subscription        = $subscriptionManager->findSubscriptionById('123456');
 
         $this->assertNull($subscription);
+    }
+
+    public function testUpdateSubscriptionCreate()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(404);
+        $mockResponse->setHeaders(array(
+                'Cache-Control'             => 'must-revalidate, private, max-age=0',
+                'Connection'                => 'keep-alive',
+                'Content-Type'              => 'application/json; charset=utf-8',
+                'Content-Length'            => '1',
+                'Date'                      => 'Tue, 28 Oct 2014 16:36:16 GMT',
+                'P3p'                       => 'CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"',
+                'Server'                    => 'nginx + Phusion Passenger',
+                'Status'                    => '404 Not Found',
+                'X-Frame-Options'           => 'SAMEORIGIN',
+                'X-Powered-By'              => 'Phusion Passenger',
+                'X-Rack-Cache'              => 'miss',
+                'X-Ratelimit-Limit'         => '1000000',
+                'X-Ratelimit-Remaining'     => '999998',
+                'X-Ratelimit-Reset'         => '1414540800',
+                'X-Request-Id'              => 'd34921f9-a3c2-4b74-ad06-9373ccb3c21b',
+                'X-Runtime'                 => '0.315852',
+                'X-Ua-Compatible'           => 'IE=Edge,chrome=1',
+            )
+        );
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body2.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+        $subscription        = $subscriptionManager->createSubscription();
+        $subscription->setProductHandle('individual-basic-plan');
+
+        $customerAttributes = new CustomerAttributes();
+        $customerAttributes->setFirstName('John');
+        $customerAttributes->setLastName('Doe');
+        $customerAttributes->setEmail('john@example.com');
+
+        $creditCardAttributes = new CreditCardAttributes();
+        $creditCardAttributes->setFullNumber('1');
+        $creditCardAttributes->setCvv('123');
+        $creditCardAttributes->setExpirationMonth('10');
+        $creditCardAttributes->setExpirationYear('2019');
+
+        $subscription->setCreditCardAttributes($creditCardAttributes);
+        $subscription->setCustomerAttributes($customerAttributes);
+
+        $subscriptionManager->updateSubscription($subscription);
     }
 }

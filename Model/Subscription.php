@@ -16,6 +16,7 @@ class Subscription
     protected $vatNumber;
     protected $agreementTerms;
     protected $productChangeDelayed;
+    protected $customerAttributes;
 
     //Output Attributes
     protected $activatedAt;
@@ -49,22 +50,112 @@ class Subscription
     protected $product;
     protected $creditCard;
     protected $bankAccount;
+    protected $creditCardAttributes;
+    protected $bankAccountAttributes;
+
+    public function __construct()
+    {
+        $this->customer    = new Customer();
+        $this->creditCard  = new CreditCard();
+        $this->bankAccount = new BankAccount();
+        $this->product     = new Product();
+    }
+
+    public function populate($data)
+    {
+        foreach ($data as $property => $value) {
+            if(!in_array($property, array('customer', 'product', 'credit_card', 'bank_account'))) {
+                $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                if (is_callable(array($this, $method))) {
+                    $this->$method($value);
+                }
+            }
+            else {
+                $class = 'FJL\ChargifyBundle\Model\\'.str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                $object = new $class();
+                $object->populate($value);
+
+                $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                if (is_callable(array($this, $method))) {
+                    $this->$method($object);
+                }
+            }
+        }
+    }
+
+    public function getArrayCopy()
+    {
+        return array(
+            'subscription' => array(
+                'product_handle'         => $this->productHandle,
+                'product_id'             => $this->productId,
+                'customer_id'            => $this->customerId,
+                'customer_reference'     => $this->customerReference,
+                'payment_profile_id'     => $this->paymentProfileId,
+                'next_billing_at'        => $this->nextBillingAt,
+                'vat_number'             => $this->vatNumber,
+                'agreement_terms'        => $this->agreementTerms,
+                'product_change_delayed' => $this->productChangeDelayed,
+                'customer_attributes'    => $this->customerAttributes->getArrayCopy(),
+                'customer'               => $this->customer->getArrayCopy(),
+            ),
+        );
+    }
+
+    /**
+     * @param mixed $bankAccountAttributes
+     */
+    public function setBankAccountAttributes($bankAccountAttributes)
+    {
+        $this->bankAccountAttributes = $bankAccountAttributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBankAccountAttributes()
+    {
+        return $this->bankAccountAttributes;
+    }
+
+    /**
+     * @param mixed $creditCardAttributes
+     */
+    public function setCreditCardAttributes($creditCardAttributes)
+    {
+        $this->creditCardAttributes = $creditCardAttributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreditCardAttributes()
+    {
+        return $this->creditCardAttributes;
+    }
+
+    /**
+     * @param mixed $customerAttributes
+     */
+    public function setCustomerAttributes($customerAttributes)
+    {
+        $this->customerAttributes = $customerAttributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerAttributes()
+    {
+        return $this->customerAttributes;
+    }
 
     /**
      * @param mixed $bankAccount
      */
     public function setBankAccount($bankAccount)
     {
-        if($bankAccount instanceof BankAccount) {
-            $this->bankAccount = $bankAccount;
-        }
-
-        if(is_array($bankAccount)) {
-            $this->bankAccount = new BankAccount();
-
-            $hydrator = new ClassMethods();
-            $hydrator->hydrate($bankAccount, $this->bankAccount);
-        }
+        $this->bankAccount = $bankAccount;
     }
 
     /**
@@ -80,15 +171,7 @@ class Subscription
      */
     public function setCreditCard($creditCard)
     {
-        if($creditCard instanceof CreditCard) {
-            $this->creditCard = $creditCard;
-        }
-
-        if(is_array($creditCard)) {
-            $this->creditCard = new CreditCard();
-            $hydrator = new ClassMethods();
-            $hydrator->hydrate($creditCard, $this->creditCard);
-        }
+        $this->creditCard = $creditCard;
     }
 
     /**
@@ -392,15 +475,7 @@ class Subscription
      */
     public function setCustomer($customer)
     {
-        if($customer instanceof Customer) {
-            $this->customer = $customer;
-        }
-        if(is_array($customer)) {
-            $this->customer = new Customer();
-
-            $hydrator = new ClassMethods();
-            $hydrator->hydrate($customer, $this->customer);
-        }
+        $this->customer = $customer;
     }
 
     /**
@@ -528,16 +603,7 @@ class Subscription
      */
     public function setProduct($product)
     {
-        if($product instanceof Product) {
-            $this->product = $product;
-        }
-
-        if(is_array($product)) {
-            $this->product = new Product();
-            $hydrator = new ClassMethods();
-            $hydrator->hydrate($product, $this->product);
-        }
-
+        $this->product = $product;
     }
 
     /**
@@ -691,7 +757,4 @@ class Subscription
     {
         return $this->updatedAt;
     }
-
-
-
 }
