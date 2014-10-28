@@ -14,7 +14,8 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateSubscription()
     {
         $subscriptionManager = new SubscriptionManager(new Client());
-        $this->assertTrue(true);
+        $subscription = $subscriptionManager->createSubscription();
+        $this->assertInstanceOf('FJL\ChargifyBundle\Model\Subscription', $subscription);
     }
 
     public function testFindSubscriptionById()
