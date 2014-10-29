@@ -4,7 +4,6 @@ namespace FJL\ChargifyBundle\Model;
 
 class Subscription
 {
-    //Input Attributes
     protected $productHandle;
     protected $productId;
     protected $customerId;
@@ -15,8 +14,6 @@ class Subscription
     protected $agreementTerms;
     protected $productChangeDelayed;
     protected $customerAttributes;
-
-    //Output Attributes
     protected $activatedAt;
     protected $balanceInCents;
     protected $cancelAtEndOfPeriod;
@@ -38,8 +35,6 @@ class Subscription
     protected $trialStartedAt;
     protected $trialEndedAt;
     protected $updatedAt;
-
-    //Input/Output Attributes
     protected $paymentCollectionMethod;
     protected $cancellationMessage;
     protected $couponCode;
@@ -54,6 +49,7 @@ class Subscription
     public function __construct()
     {
         $this->customer              = new Customer();
+        $this->customerAttributes    = new CustomerAttributes();
         $this->creditCard            = new CreditCard();
         $this->bankAccount           = new BankAccount();
         $this->product               = new Product();
@@ -97,10 +93,37 @@ class Subscription
                 'agreement_terms'        => $this->agreementTerms,
                 'product_change_delayed' => $this->productChangeDelayed,
                 'customer_attributes'    => $this->customerAttributes->getArrayCopy(),
-                'customer'               => $this->customer->getArrayCopy(),
-                'credit_card_attributes' => $this->creditCardAttributes->getArrayCopy(),
-                'product'                => $this->product->getArrayCopy(),
-                'bank_account'           => $this->bankAccount->getArrayCopy(),
+                'activated_at'           => $this->activatedAt,
+                'balance_in_cents'       => $this->balanceInCents,
+                'cancel_at_end_of_period' => $this->cancelAtEndOfPeriod,
+                'canceled_at'             => $this->canceledAt,
+                'created_at'              => $this->createdAt,
+                'current_period_started_at' => $this->currentPeriodStartedAt,
+                'current_period_ends_at'    => $this->currentPeriodEndsAt,
+                'delayed_cancel_at'         => $this->delayedCancelAt,
+                'expires_at'                => $this->expiresAt,
+                'id'                        => $this->id,
+                'next_assessment_at'        => $this->nextAssessmentAt,
+                'previous_state'            => $this->previousState,
+                'product_price_in_cents'    => $this->productPriceInCents,
+                'product_version_number'    => $this->productVersionNumber,
+                'signup_payment_id'         => $this->signupPaymentId,
+                'signup_revenue'            => $this->signupRevenue,
+                'state'                     => $this->state,
+                'total_revenue_in_cents'    => $this->totalRevenueInCents,
+                'trial_started_at'          => $this->trialStartedAt,
+                'trial_ended_at'            => $this->trialEndedAt,
+                'updated_at'                => $this->updatedAt,
+                'payment_collection_method' => $this->paymentCollectionMethod,
+                'cancellation_message'      => $this->cancellationMessage,
+                'coupon_code'               => $this->couponCode,
+                'payment_profile'           => $this->paymentProfile,
+                'customer'                  => $this->customer->getArrayCopy(),
+                'credit_card_attributes'    => $this->creditCardAttributes->getArrayCopy(),
+                'credit_card'               => $this->creditCard->getArrayCopy(),
+                'product'                   => $this->product->getArrayCopy(),
+                'bank_account'              => $this->bankAccount->getArrayCopy(),
+                'bank_account_attributes'   => $this->bankAccountAttributes->getArrayCopy(),
             ),
         );
     }

@@ -193,7 +193,8 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $client->addSubscriber($mockPlugin);
 
         $subscriptionManager = new SubscriptionManager($client);
-        $subscription        = $subscriptionManager->createSubscription();
+
+        $subscription = $subscriptionManager->createSubscription();
         $subscription->setProductHandle('individual-basic-plan');
 
         $customerAttributes = new CustomerAttributes();
@@ -211,5 +212,66 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $subscription->setCustomerAttributes($customerAttributes);
 
         $subscriptionManager->updateSubscription($subscription);
+        $this->assertEquals('6843663', $subscription->getId());
+    }
+
+    public function testUpdateSubscriptionUpdate()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+        $mockResponse->setHeaders(array(
+                'Cache-Control'             => 'max-age=0, private, must-revalidate',
+                'Connection'                => 'keep-alive',
+                'Content-Type'              => 'application/json; charset=utf-8',
+                'Content-Length'            => '2384',
+                'Date'                      => 'Wed, 29 Oct 2014 12:46:26 GMT',
+                'Etag'                      => '1dc3ed59cf34cd1b477c126cc6f2ac00',
+                'Location'                  => 'https://xxxxxxx.chargify.com/subscriptions/xxxxxxx',
+                'P3p'                       => 'CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"',
+                'Server'                    => 'nginx + Phusion Passenger',
+                'Status'                    => '200 OK',
+                'Strict-Transport-Security' => 'max-age=31536000',
+                'X-Content-Type-Options'    => 'nosniff',
+                'X-Frame-Options'           => 'SAMEORIGIN',
+                'X-Powered-By'              => 'Phusion Passenger',
+                'X-Rack-Cache'              => 'invalidate, pass',
+                'X-Ratelimit-Limit'         => '1000000',
+                'X-Ratelimit-Remaining'     => '999997',
+                'X-Ratelimit-Reset'         => '1414540800',
+                'X-Request-Id'              => 'b5759fc3-4f8f-46b4-8669-b2a3e6fbcf92',
+                'X-Ua-Compatible'           => 'IE=Edge,chrome=1',
+                'X-Runtime'                 => '0.164969',
+                'X-Xss-Protection'          => '1; mode=block'
+            )
+        );
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body4.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+
+        $subscription = $subscriptionManager->createSubscription();
+        $subscription->setId('1111111');
+
+        $creditCardAttributes = new CreditCardAttributes();
+        $creditCardAttributes->setFullNumber('1');
+        $creditCardAttributes->setExpirationMonth('10');
+        $creditCardAttributes->setExpirationYear('2019');
+
+        $subscription->setCreditCardAttributes($creditCardAttributes);
+
+        $subscription->getCreditCardAttributes()->setFullNumber('1');
+        $subscription->getCreditCardAttributes()->setExpirationMonth('10');
+        $subscription->getCreditCardAttributes()->setExpirationYear('2019');
+
+        $subscriptionManager->updateSubscription($subscription);
+
+        $this->assertEquals('6849305', $subscription->getId());
     }
 }
