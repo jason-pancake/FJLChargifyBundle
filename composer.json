@@ -7,7 +7,8 @@
     "authors": [
         {
             "name": "Jason Pancake",
-            "email": "jason.pancake@gmail.com"
+            "email": "jason.pancake@gmail.com",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "dev",
@@ -19,11 +20,6 @@
         "zendframework/zend-stdlib": "2.3.*@dev",
         "zendframework/zend-filter": "2.3.*@dev",
         "zendframework/zend-servicemanager": "2.3.*@dev"
-    },
-    "require-dev": {
-        "doctrine/doctrine-bundle": "*",
-        "symfony/yaml": "~2.3",
-        "symfony/validator": "~2.3"
     },
     "autoload": {
         "psr-4": { "FJL\\ChargifyBundle\\": "" }
