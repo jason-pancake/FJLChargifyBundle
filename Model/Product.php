@@ -4,6 +4,7 @@ namespace FJL\ChargifyBundle\Model;
 
 class Product
 {
+    protected $id;
     protected $priceInCents;
     protected $name;
     protected $handle;
@@ -61,6 +62,7 @@ class Product
     public function getArrayCopy()
     {
         return array(
+            'id'                       => $this->id,
             'price_in_cents'           => $this->priceInCents,
             'name'                     => $this->name,
             'handle'                   => $this->handle,
@@ -87,6 +89,22 @@ class Product
             'updated_at'               => $this->updatedAt,
             'archived_at'              => $this->archivedAt,
         );
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
