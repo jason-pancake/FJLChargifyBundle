@@ -2,18 +2,10 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-use Guzzle\Http\ClientInterface;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 
-class SubscriptionManager implements ResourceManagerInterface
+class SubscriptionManager extends ResourceManager
 {
-    protected $client;
-
-    public function __construct(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function createSubscription()
     {
         return new Subscription();
@@ -27,18 +19,26 @@ class SubscriptionManager implements ResourceManagerInterface
         ));
 
         //Get the response
-        $response = $request->send()->json();
+        $response = $this->getResponse($request);
 
-        //Instantiate a new subscription
-        $subscription = $this->createSubscription();
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
 
-        //Instanitate the hydrator object
-        $hydrator = new ArraySerializable();
+            //Instantiate a new subscription
+            $subscription = $this->createSubscription();
 
-        //Hydrate the subscription object with the response
-        $hydrator->hydrate($response['subscription'], $subscription);
+            //Instanitate the hydrator object
+            $hydrator = new ArraySerializable();
 
-        return $subscription;
+            //Hydrate the subscription object with the response
+            $hydrator->hydrate($json['subscription'], $subscription);
+
+            return $subscription;
+        }
+
+        return false;
     }
 
     public function updateSubscription(Subscription $subscription)
@@ -61,11 +61,19 @@ class SubscriptionManager implements ResourceManagerInterface
         }
 
         //Get the response
-        $response = $request->send()->json();
+        $response = $this->getResponse($request);
 
-        //Hydrate the subscription object with the response
-        $hydrator->hydrate($response['subscription'], $subscription);
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
 
-        return $subscription;
+            //Hydrate the subscription object with the response
+            $hydrator->hydrate($json['subscription'], $subscription);
+
+            return $subscription;
+        }
+
+        return false;
     }
 }

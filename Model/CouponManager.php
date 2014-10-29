@@ -2,18 +2,10 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-use Guzzle\Http\ClientInterface;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 
-class CouponManager implements ResourceManagerInterface
+class CouponManager extends ResourceManager
 {
-    protected $client;
-
-    public function __construct(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function createCoupon()
     {
         return new Coupon();
@@ -22,10 +14,11 @@ class CouponManager implements ResourceManagerInterface
     public function findCouponByCode($code, $productFamilyId = null)
     {
         if(!$productFamilyId) {
+            //Build the resource URI
             $resource = sprintf("/coupons/find.json?code=%s", $code);
         }
         else {
-            //Build the request
+            //Build the resource URI
             $resource = sprintf("/coupons/find.json?code=%s&product_family_id=%s", $code, $productFamilyId);
         }
 
@@ -35,17 +28,25 @@ class CouponManager implements ResourceManagerInterface
         ));
 
         //Get the response
-        $response = $request->send()->json();
+        $response = $this->getResponse($request);
 
-        //Instantiate a new coupon
-        $coupon = $this->createCoupon();
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
 
-        //Instanitate the hydrator object
-        $hydrator = new ArraySerializable();
+            //Instantiate a new coupon
+            $coupon = $this->createCoupon();
 
-        //Hydrate the subscription object with the response
-        $hydrator->hydrate($response['coupon'], $coupon);
+            //Instanitate the hydrator object
+            $hydrator = new ArraySerializable();
 
-        return $coupon;
+            //Hydrate the subscription object with the response
+            $hydrator->hydrate($json['coupon'], $coupon);
+
+            return $coupon;
+        }
+
+        return false;
     }
 }

@@ -58,6 +58,6 @@ class CouponManagerTest extends \PHPUnit_Framework_TestCase
         $couponManager = new CouponManager($client);
         $coupon = $couponManager->findCouponByCode('XXXXXX');
 
-        $this->assertEquals('440839', $coupon->getProductFamilyId());
+        $this->assertEquals('678901', $coupon->getProductFamilyId());
     }
 }

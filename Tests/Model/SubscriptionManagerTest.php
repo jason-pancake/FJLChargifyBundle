@@ -57,12 +57,12 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $client->addSubscriber($mockPlugin);
 
         $subscriptionManager = new SubscriptionManager($client);
-        $subscription        = $subscriptionManager->findSubscriptionById('12');
+        $subscription        = $subscriptionManager->findSubscriptionById('1234567');
 
-        $this->assertEquals('6807549', $subscription->getId());
+        $this->assertEquals('1234567', $subscription->getId());
         $this->assertEquals('John', $subscription->getCustomer()->getFirstName());
-        $this->assertEquals('Individual Basic Plan', $subscription->getProduct()->getName());
-        $this->assertEquals('individual-plans', $subscription->getProduct()->getProductFamily()->getHandle());
+        $this->assertEquals('Sample Plan', $subscription->getProduct()->getName());
+        $this->assertEquals('sample-plans', $subscription->getProduct()->getProductFamily()->getHandle());
         $this->assertEquals('XXXX-XXXX-XXXX-1', $subscription->getCreditCard()->getMaskedCardNumber());
     }
 
@@ -105,14 +105,11 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $client->addSubscriber($mockPlugin);
 
         $subscriptionManager = new SubscriptionManager($client);
-        $subscription        = $subscriptionManager->findSubscriptionById('12');
+        $subscription        = $subscriptionManager->findSubscriptionById('1234567');
 
         $this->assertEquals('XXXXXXX1111', $subscription->getBankAccount()->getMaskedBankAccountNumber());
     }
 
-    /**
-     * @expectedException Guzzle\Http\Exception\ClientErrorResponseException
-     */
     public function testFindSubscriptionByIdNotFound()
     {
         $mockPlugin = new MockPlugin();
@@ -139,7 +136,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body2.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body6.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
@@ -150,7 +147,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $subscriptionManager = new SubscriptionManager($client);
         $subscription        = $subscriptionManager->findSubscriptionById('123456');
 
-        $this->assertNull($subscription);
+        $this->assertFalse($subscription);
     }
 
     public function testUpdateSubscriptionCreate()
@@ -195,7 +192,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $subscriptionManager = new SubscriptionManager($client);
 
         $subscription = $subscriptionManager->createSubscription();
-        $subscription->setProductHandle('individual-basic-plan');
+        $subscription->setProductHandle('sample-plan');
 
         $customerAttributes = new CustomerAttributes();
         $customerAttributes->setFirstName('John');
@@ -205,14 +202,14 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $creditCardAttributes = new CreditCardAttributes();
         $creditCardAttributes->setFullNumber('1');
         $creditCardAttributes->setCvv('123');
-        $creditCardAttributes->setExpirationMonth('10');
-        $creditCardAttributes->setExpirationYear('2019');
+        $creditCardAttributes->setExpirationMonth('01');
+        $creditCardAttributes->setExpirationYear('2020');
 
         $subscription->setCreditCardAttributes($creditCardAttributes);
         $subscription->setCustomerAttributes($customerAttributes);
 
         $subscriptionManager->updateSubscription($subscription);
-        $this->assertEquals('6843663', $subscription->getId());
+        $this->assertEquals('1234567', $subscription->getId());
     }
 
     public function testUpdateSubscriptionUpdate()
@@ -272,6 +269,6 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 
         $subscriptionManager->updateSubscription($subscription);
 
-        $this->assertEquals('6849305', $subscription->getId());
+        $this->assertEquals('1234567', $subscription->getId());
     }
 }

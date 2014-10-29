@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class PaymentProfileAttributes
+abstract class PaymentProfileAttributes
 {
     protected $firstName;
     protected $lastName;
