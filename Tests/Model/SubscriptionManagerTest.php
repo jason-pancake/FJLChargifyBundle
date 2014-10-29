@@ -48,7 +48,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             'transfer-encoding'         => 'chunked',
             )
         );
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body1.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body1.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
@@ -96,7 +96,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body2.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body2.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
@@ -136,7 +136,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body6.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body6.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
@@ -181,7 +181,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body3.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body3.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
@@ -243,7 +243,7 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body4.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body4.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);

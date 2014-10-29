@@ -47,7 +47,7 @@ class CouponManagerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/../Mock/Bodies/body5.txt', 'r+'));
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body5.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 
         $mockPlugin->addResponse($mockResponse);
