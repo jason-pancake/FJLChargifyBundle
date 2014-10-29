@@ -5,7 +5,7 @@ namespace FJL\ChargifyBundle\Model;
 use Guzzle\Http\ClientInterface;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 
-class SubscriptionManager implements SubscriptionManagerInterface
+class SubscriptionManager implements ResourceManagerInterface
 {
     protected $client;
 
