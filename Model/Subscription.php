@@ -2,8 +2,6 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-use Zend\Stdlib\Hydrator\ClassMethods;
-
 class Subscription
 {
     //Input Attributes
@@ -55,11 +53,12 @@ class Subscription
 
     public function __construct()
     {
-        $this->customer             = new Customer();
-        $this->creditCard           = new CreditCard();
-        $this->bankAccount          = new BankAccount();
-        $this->product              = new Product();
-        $this->creditCardAttributes = new CreditCardAttributes();
+        $this->customer              = new Customer();
+        $this->creditCard            = new CreditCard();
+        $this->bankAccount           = new BankAccount();
+        $this->product               = new Product();
+        $this->creditCardAttributes  = new CreditCardAttributes();
+        $this->bankAccountAttributes = new BankAccountAttributes();
     }
 
     public function populate($data)
@@ -100,6 +99,8 @@ class Subscription
                 'customer_attributes'    => $this->customerAttributes->getArrayCopy(),
                 'customer'               => $this->customer->getArrayCopy(),
                 'credit_card_attributes' => $this->creditCardAttributes->getArrayCopy(),
+                'product'                => $this->product->getArrayCopy(),
+                'bank_account'           => $this->bankAccount->getArrayCopy(),
             ),
         );
     }

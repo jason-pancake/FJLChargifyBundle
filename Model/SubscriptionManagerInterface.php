@@ -3,7 +3,6 @@
 namespace FJL\ChargifyBundle\Model;
 
 use Guzzle\Http\ClientInterface;
-use FJL\ChargifyBundle\Model\Subscription;
 
 interface SubscriptionManagerInterface
 {

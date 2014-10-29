@@ -10,6 +10,27 @@ class ProductFamily
     protected $name;
     protected $description;
 
+    public function getArrayCopy()
+    {
+        return array(
+            'id'              => $this->id,
+            'accounting_code' => $this->accountingCode,
+            'handle'          => $this->handle,
+            'name'            => $this->name,
+            'description'     => $this->description,
+        );
+    }
+
+    public function populate($data)
+    {
+        foreach ($data as $property => $value) {
+            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+            if (is_callable(array($this, $method))) {
+                $this->$method($value);
+            }
+        }
+    }
+
     /**
      * @param mixed $accountingCode
      */

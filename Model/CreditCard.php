@@ -9,14 +9,13 @@ class CreditCard extends CreditCardAttributes
     protected $customerId;
     protected $maskedCardNumber;
 
-    public function populate($data)
+    public function getArrayCopy()
     {
-        foreach ($data as $property => $value) {
-            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
-            if (is_callable(array($this, $method))) {
-                $this->$method($value);
-            }
-        }
+        return array_merge(parent::getArrayCopy(), array(
+            'id'                 => $this->id,
+            'customer_id'        => $this->customerId,
+            'masked_card_number' => $this->maskedCardNumber,
+        ));
     }
 
     /**

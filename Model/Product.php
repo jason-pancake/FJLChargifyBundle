@@ -2,9 +2,6 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-use FJL\ChargifyBundle\Model\Customer;
-use Zend\Stdlib\Hydrator\ClassMethods;
-
 class Product
 {
     protected $priceInCents;
@@ -34,14 +31,62 @@ class Product
     protected $updatedAt;
     protected $archivedAt;
 
+    public function __construct()
+    {
+        $this->productFamily = new ProductFamily();
+    }
+
     public function populate($data)
     {
         foreach ($data as $property => $value) {
-            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
-            if (is_callable(array($this, $method))) {
-                $this->$method($value);
+            if(!in_array($property, array('product_family'))) {
+                $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                if (is_callable(array($this, $method))) {
+                    $this->$method($value);
+                }
+            }
+            else {
+                $class = 'FJL\ChargifyBundle\Model\\'.str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                $object = new $class();
+                $object->populate($value);
+
+                $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
+                if (is_callable(array($this, $method))) {
+                    $this->$method($object);
+                }
             }
         }
+    }
+
+    public function getArrayCopy()
+    {
+        return array(
+            'price_in_cents'           => $this->priceInCents,
+            'name'                     => $this->name,
+            'handle'                   => $this->handle,
+            'description'              => $this->description,
+            'product_family'           => $this->productFamily->getArrayCopy(),
+            'product_family_id'        => $this->productFamilyId,
+            'accounting_code'          => $this->accountingCode,
+            'interval_unit'            => $this->intervalUnit,
+            'interval'                 => $this->interval,
+            'initial_charge_in_cents'  => $this->initialChargeInCents,
+            'trial_price_in_cents'     => $this->trialPriceInCents,
+            'trial_interval'           => $this->trialInterval,
+            'trial_interval_unit'      => $this->trialIntervalUnit,
+            'expiration_interval'      => $this->expirationInterval,
+            'expiration_interval_unit' => $this->expirationIntervalUnit,
+            'return_url'               => $this->returnUrl,
+            'return_params'            => $this->returnParams,
+            'require_credit_card'      => $this->requireCreditCard,
+            'require_billing_address'  => $this->requireBillingAddress,
+            'request_billing_address'  => $this->requestBillingAddress,
+            'taxable'                  => $this->taxable,
+            'request_credit_card'      => $this->requestCreditCard,
+            'created_at'               => $this->createdAt,
+            'updated_at'               => $this->updatedAt,
+            'archived_at'              => $this->archivedAt,
+        );
     }
 
     /**
@@ -241,16 +286,7 @@ class Product
      */
     public function setProductFamily($productFamily)
     {
-        if($productFamily instanceof ProductFamily) {
-            $this->productFamily = $productFamily;
-        }
-
-        if(is_array($productFamily)) {
-            $this->productFamily = new ProductFamily();
-            $hydrator = new ClassMethods();
-            $hydrator->hydrate($productFamily, $this->productFamily);
-        }
-
+        $this->productFamily = $productFamily;
     }
 
     /**
@@ -468,6 +504,4 @@ class Product
     {
         return $this->updatedAt;
     }
-
-
 }
