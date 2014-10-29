@@ -1,0 +1,27 @@
+{
+    "name": "flapjacklabs/chargify-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony FJLChargifyBundle",
+    "keywords": ["chargify"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Pancake",
+            "email": "jason.pancake@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "~2.3",
+        "symfony/form": "~2.3",
+        "guzzle/guzzle": "@stable",
+        "zendframework/zend-stdlib": "2.3.*@dev",
+        "zendframework/zend-filter": "2.3.*@dev",
+        "zendframework/zend-servicemanager": "2.3.*@dev"
+    },
+    "autoload": {
+        "psr-4": { "FJL\\ChargifyBundle\\": "" }
+    }
+}
