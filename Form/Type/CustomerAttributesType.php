@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CustomerType extends AbstractType
+class CustomerAttributesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,12 +56,12 @@ class CustomerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'FJL\ChargifyBundle\Model\Customer',
+            'data_class' => 'FJL\ChargifyBundle\Model\CustomerAttributes',
         ));
     }
 
     public function getName()
     {
-        return 'customer';
+        return 'customer_attributes';
     }
 }
