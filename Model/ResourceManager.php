@@ -3,6 +3,8 @@
 namespace FJL\ChargifyBundle\Model;
 
 use Guzzle\Http\ClientInterface;
+use Guzzle\Http\Exception\BadResponseException;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\RequestException;
 use Psr\Log\LoggerInterface;
@@ -23,24 +25,19 @@ abstract class ResourceManager
         try {
             return $request->send();
         }
-        catch(CurlException $e) {
+        catch(BadResponseException $e) {
             if($this->logger) {
                 $this->logger->error($e->getCode());
                 $this->logger->error($e->getMessage());
                 $this->logger->error($e->getRequest());
+                $this->logger->error($e->getResponse());
             }
-
-            return false;
         }
         catch(RequestException $e) {
             if($this->logger) {
                 $this->logger->error($e->getCode());
                 $this->logger->error($e->getMessage());
                 $this->logger->error($e->getRequest());
-
-                if ($e->hasResponse()) {
-                    $this->logger->error($e->getResponse());
-                }
             }
 
             return false;
