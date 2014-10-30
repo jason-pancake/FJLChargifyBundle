@@ -32,6 +32,8 @@ abstract class ResourceManager
                 $this->logger->error($e->getRequest());
                 $this->logger->error($e->getResponse());
             }
+
+            return false;
         }
         catch(RequestException $e) {
             if($this->logger) {
