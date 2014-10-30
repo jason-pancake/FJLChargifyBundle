@@ -17,6 +17,7 @@
         "symfony/framework-bundle": "~2.3",
         "symfony/form": "~2.3",
         "guzzle/guzzle": "@stable",
+        "misd/guzzle-bundle": "~1.0",
         "zendframework/zend-stdlib": "2.3.*@dev",
         "zendframework/zend-filter": "2.3.*@dev",
         "zendframework/zend-servicemanager": "2.3.*@dev"
