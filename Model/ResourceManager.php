@@ -3,6 +3,7 @@
 namespace FJL\ChargifyBundle\Model;
 
 use Guzzle\Http\ClientInterface;
+use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
@@ -21,6 +22,15 @@ abstract class ResourceManager
         //Get the response and log the exceptions if there are any
         try {
             return $request->send();
+        }
+        catch(CurlException $e) {
+            if($this->logger) {
+                $this->logger->error($e->getCode());
+                $this->logger->error($e->getMessage());
+                $this->logger->error($e->getRequest());
+            }
+
+            return false;
         }
         catch(RequestException $e) {
             if($this->logger) {
