@@ -4,8 +4,6 @@ namespace FJL\ChargifyBundle\Model;
 
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
