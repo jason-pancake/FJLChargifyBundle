@@ -4,6 +4,7 @@ namespace FJL\ChargifyBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreditCardAttributesType extends AbstractType
 {
@@ -67,6 +68,13 @@ class CreditCardAttributesType extends AbstractType
                 'choices' => $years
             ))
         ;
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'FJL\ChargifyBundle\Model\CreditCardAttributes',
+        ));
     }
 
     public function getName()

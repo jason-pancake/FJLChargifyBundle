@@ -4,6 +4,7 @@ namespace FJL\ChargifyBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SubscriptionType extends AbstractType
 {
@@ -47,6 +48,13 @@ class SubscriptionType extends AbstractType
                 'label' => 'Product Change Delayed',
             ))
         ;
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'FJL\ChargifyBundle\Model\Subscription',
+        ));
     }
 
     public function getName()
