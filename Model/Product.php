@@ -61,34 +61,23 @@ class Product
 
     public function getArrayCopy()
     {
-        return array(
-            'id'                       => $this->id,
-            'price_in_cents'           => $this->priceInCents,
-            'name'                     => $this->name,
-            'handle'                   => $this->handle,
-            'description'              => $this->description,
-            'product_family'           => $this->productFamily->getArrayCopy(),
-            'product_family_id'        => $this->productFamilyId,
-            'accounting_code'          => $this->accountingCode,
-            'interval_unit'            => $this->intervalUnit,
-            'interval'                 => $this->interval,
-            'initial_charge_in_cents'  => $this->initialChargeInCents,
-            'trial_price_in_cents'     => $this->trialPriceInCents,
-            'trial_interval'           => $this->trialInterval,
-            'trial_interval_unit'      => $this->trialIntervalUnit,
-            'expiration_interval'      => $this->expirationInterval,
-            'expiration_interval_unit' => $this->expirationIntervalUnit,
-            'return_url'               => $this->returnUrl,
-            'return_params'            => $this->returnParams,
-            'require_credit_card'      => $this->requireCreditCard,
-            'require_billing_address'  => $this->requireBillingAddress,
-            'request_billing_address'  => $this->requestBillingAddress,
-            'taxable'                  => $this->taxable,
-            'request_credit_card'      => $this->requestCreditCard,
-            'created_at'               => $this->createdAt,
-            'updated_at'               => $this->updatedAt,
-            'archived_at'              => $this->archivedAt,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if(!in_array($key, array('productFamily'))) {
+                if($value && $value != '') {
+                    $data[$keyUscore] = $value;
+                }
+            }
+            else {
+                if($this->$key != null) {
+                    $data[$keyUscore] = $this->$key->getArrayCopy();
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

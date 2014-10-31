@@ -46,17 +46,6 @@ class Subscription
     protected $creditCardAttributes;
     protected $bankAccountAttributes;
 
-    public function __construct()
-    {
-        $this->customer              = new Customer();
-        $this->customerAttributes    = new CustomerAttributes();
-        $this->creditCard            = new CreditCard();
-        $this->bankAccount           = new BankAccount();
-        $this->product               = new Product();
-        $this->creditCardAttributes  = new CreditCardAttributes();
-        $this->bankAccountAttributes = new BankAccountAttributes();
-    }
-
     public function populate($data)
     {
         foreach ($data as $property => $value) {
@@ -81,51 +70,23 @@ class Subscription
 
     public function getArrayCopy()
     {
-        return array(
-            'subscription' => array(
-                'product_handle'            => $this->productHandle,
-                'product_id'                => $this->productId,
-                'customer_id'               => $this->customerId,
-                'customer_reference'        => $this->customerReference,
-                'payment_profile_id'        => $this->paymentProfileId,
-                'next_billing_at'           => $this->nextBillingAt,
-                'vat_number'                => $this->vatNumber,
-                'agreement_terms'           => $this->agreementTerms,
-                'product_change_delayed'    => $this->productChangeDelayed,
-                'customer_attributes'       => $this->customerAttributes->getArrayCopy(),
-                'activated_at'              => $this->activatedAt,
-                'balance_in_cents'          => $this->balanceInCents,
-                'cancel_at_end_of_period'   => $this->cancelAtEndOfPeriod,
-                'canceled_at'               => $this->canceledAt,
-                'created_at'                => $this->createdAt,
-                'current_period_started_at' => $this->currentPeriodStartedAt,
-                'current_period_ends_at'    => $this->currentPeriodEndsAt,
-                'delayed_cancel_at'         => $this->delayedCancelAt,
-                'expires_at'                => $this->expiresAt,
-                'id'                        => $this->id,
-                'next_assessment_at'        => $this->nextAssessmentAt,
-                'previous_state'            => $this->previousState,
-                'product_price_in_cents'    => $this->productPriceInCents,
-                'product_version_number'    => $this->productVersionNumber,
-                'signup_payment_id'         => $this->signupPaymentId,
-                'signup_revenue'            => $this->signupRevenue,
-                'state'                     => $this->state,
-                'total_revenue_in_cents'    => $this->totalRevenueInCents,
-                'trial_started_at'          => $this->trialStartedAt,
-                'trial_ended_at'            => $this->trialEndedAt,
-                'updated_at'                => $this->updatedAt,
-                'payment_collection_method' => $this->paymentCollectionMethod,
-                'cancellation_message'      => $this->cancellationMessage,
-                'coupon_code'               => $this->couponCode,
-                'payment_profile'           => $this->paymentProfile,
-                'customer'                  => $this->customer->getArrayCopy(),
-                'credit_card_attributes'    => $this->creditCardAttributes->getArrayCopy(),
-                'credit_card'               => $this->creditCard->getArrayCopy(),
-                'product'                   => $this->product->getArrayCopy(),
-                'bank_account'              => $this->bankAccount->getArrayCopy(),
-                'bank_account_attributes'   => $this->bankAccountAttributes->getArrayCopy(),
-            ),
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if(!in_array($key, array('customerAttributes', 'customer', 'creditCardAttributes', 'creditCard', 'product', 'bankAccount', 'bankAccountAttributes'))) {
+                if($value && $value != '') {
+                    $data['subscription'][$keyUscore] = $value;
+                }
+            }
+            else {
+                if($this->$key != null) {
+                    $data['subscription'][$keyUscore] = $this->$key->getArrayCopy();
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

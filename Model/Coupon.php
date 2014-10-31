@@ -25,26 +25,16 @@ class Coupon
 
     public function getArrayCopy()
     {
-        return array(
-            'allow_negative_balance' => $this->allowNegativeBalance,
-            'amount_in_cents'        => $this->amountInCents,
-            'archived_at'            => $this->archivedAt,
-            'code'                   => $this->code,
-            'conversion_limit'       => $this->conversionLimit,
-            'created_at'             => $this->createdAt,
-            'description'            => $this->description,
-            'duration_interval'      => $this->durationInterval,
-            'duration_interval_unit' => $this->durationIntervalUnit,
-            'duration_period_count'  => $this->durationPeriodCount,
-            'end_date'               => $this->endDate,
-            'id'                     => $this->id,
-            'name'                   => $this->name,
-            'percentage'             => $this->percentage,
-            'product_family_id'      => $this->productFamilyId,
-            'recurring'              => $this->recurring,
-            'start_date'             => $this->startDate,
-            'updated_at'             => $this->updatedAt,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     public function populate($data)

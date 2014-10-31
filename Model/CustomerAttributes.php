@@ -29,20 +29,16 @@ class CustomerAttributes
 
     public function getArrayCopy()
     {
-        return array(
-            'first_name'   => $this->firstName,
-            'last_name'    => $this->lastName,
-            'email'        => $this->email,
-            'organization' => $this->organization,
-            'reference'    => $this->reference,
-            'address'      => $this->address,
-            'address_2'    => $this->address2,
-            'city'         => $this->city,
-            'state'        => $this->state,
-            'zip'          => $this->zip,
-            'country'      => $this->country,
-            'phone'        => $this->phone,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**

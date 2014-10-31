@@ -13,14 +13,16 @@ class CreditCardAttributes extends PaymentProfileAttributes
 
     public function getArrayCopy()
     {
-        return array(
-            'full_number'          => $this->fullNumber,
-            'expiration_month'     => $this->expirationMonth,
-            'expiration_year'      => $this->expirationYear,
-            'cvv'                  => $this->cvv,
-            'last_four'            => $this->lastFour,
-            'card_type'            => $this->cardType,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**

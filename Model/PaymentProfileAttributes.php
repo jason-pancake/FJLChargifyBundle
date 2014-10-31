@@ -28,19 +28,16 @@ abstract class PaymentProfileAttributes
 
     public function getArrayCopy()
     {
-        return array(
-            'billing_address'            => $this->billingAddress,
-            'billing_address_2'          => $this->billingAddress2,
-            'billing_city'               => $this->billingCity,
-            'billing_state'              => $this->billingState,
-            'billing_zip'                => $this->billingZip,
-            'billing_country'            => $this->billingCountry,
-            'current_vault'              => $this->currentVault,
-            'customer_vault_token'       => $this->customerVaultToken,
-            'first_name'                 => $this->firstName,
-            'last_name'                  => $this->lastName,
-            'vault_token'                => $this->vaultToken,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**

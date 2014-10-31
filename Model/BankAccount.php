@@ -11,12 +11,16 @@ class BankAccount extends BankAccountAttributes
 
     public function getArrayCopy()
     {
-        return array_merge(parent::getArrayCopy(), array(
-            'customer_id'                => $this->customerId,
-            'id'                         => $this->id,
-            'masked_bank_account_number' => $this->maskedBankAccountNumber,
-            'masked_bank_routing_number' => $this->maskedBankRoutingNumber,
-        ));
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**

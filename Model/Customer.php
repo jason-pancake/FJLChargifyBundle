@@ -11,12 +11,16 @@ class Customer extends CustomerAttributes
 
     public function getArrayCopy()
     {
-        return array_merge(parent::getArrayCopy(), array(
-            'id'         => $this->id,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt,
-            'vat_number' => $this->vatNumber,
-        ));
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**

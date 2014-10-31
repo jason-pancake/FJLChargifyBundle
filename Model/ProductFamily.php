@@ -12,13 +12,16 @@ class ProductFamily
 
     public function getArrayCopy()
     {
-        return array(
-            'id'              => $this->id,
-            'accounting_code' => $this->accountingCode,
-            'handle'          => $this->handle,
-            'name'            => $this->name,
-            'description'     => $this->description,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     public function populate($data)

@@ -14,15 +14,16 @@ class BankAccountAttributes extends PaymentProfileAttributes
 
     public function getArrayCopy()
     {
-        return array(
-            'bank_account'               => $this->bankAccount,
-            'bank_account_type'          => $this->bankAccountType,
-            'bank_name'                  => $this->bankName,
-            'payment_type'               => $this->paymentType,
-            'bank_routing_number'        => $this->bankRoutingNumber,
-            'bank_account_number'        => $this->bankAccountNumber,
-            'bank_account_holder_type'   => $this->bankAccountHolderType,
-        );
+        $data = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data[$keyUscore] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**
