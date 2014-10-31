@@ -76,4 +76,31 @@ class SubscriptionManager extends ResourceManager
 
         return false;
     }
+
+    public function deleteSubscription(Subscription $subscription) {
+        //Instantiate the hydrator object
+        $hydrator = new ArraySerializable();
+
+        //Prepare the request
+        $request = $this->client->delete( sprintf("/subscriptions/%s.json", $subscription->getId()), array(
+                'Content-Type' => 'application/json',
+            ),
+            json_encode( $hydrator->extract($subscription) ) );
+
+        //Get the response
+        $response = $this->getResponse($request);
+
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
+
+            //Hydrate the subscription object with the response
+            $hydrator->hydrate($json['subscription'], $subscription);
+
+            return $subscription;
+        }
+
+        return false;
+    }
 }

@@ -1,0 +1,5 @@
+{
+    "subscription": {
+        "cancellation_message": "Canceling the subscription via the API"
+    }
+}
