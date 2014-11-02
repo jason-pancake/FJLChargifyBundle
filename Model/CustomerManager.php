@@ -24,7 +24,7 @@ class CustomerManager extends ResourceManager
                 json_encode( $hydrator->extract($customer) ) );
         }
         else {
-            $request = $this->client->put( '/customers/'.$customer->getId().'.json', array(
+            $request = $this->client->put( sprintf("/customers/%s.json", $customer->getId()), array(
                     'Content-Type' => 'application/json',
                 ),
                 json_encode( $hydrator->extract($customer) ) );
@@ -38,7 +38,7 @@ class CustomerManager extends ResourceManager
             //Get JSON
             $json = $response->json();
 
-            //Hydrate the subscription object with the response
+            //Hydrate the customer object with the response
             $hydrator->hydrate($json['customer'], $customer);
 
             return $customer;
