@@ -39,6 +39,7 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
         $customer->setFirstName('Joe');
         $customer->setLastName('Blow');
         $customer->setEmail('joe@example.com');
+        $customer->setId('1234567');
 
         $customerManager->updateCustomer($customer);
 
