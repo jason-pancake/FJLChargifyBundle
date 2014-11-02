@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-abstract class PaymentProfileAttributes
+abstract class PaymentProfileAttributes extends ChargifyResource
 {
     protected $firstName;
     protected $lastName;
@@ -15,30 +15,6 @@ abstract class PaymentProfileAttributes
     protected $vaultToken;
     protected $customerVaultToken;
     protected $currentVault;
-
-    public function populate($data)
-    {
-        foreach ($data as $property => $value) {
-            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
-            if (is_callable(array($this, $method))) {
-                $this->$method($value);
-            }
-        }
-    }
-
-    public function getArrayCopy()
-    {
-        $data = array();
-
-        foreach($this as $key => $value) {
-            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if($value && $value != '') {
-                $data[$keyUscore] = $value;
-            }
-        }
-
-        return $data;
-    }
 
     /**
      * @param mixed $billingAddress

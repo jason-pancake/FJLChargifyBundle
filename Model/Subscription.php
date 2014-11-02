@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class Subscription
+class Subscription extends ChargifyResource
 {
     protected $productHandle;
     protected $productId;
@@ -46,7 +46,7 @@ class Subscription
     protected $creditCardAttributes;
     protected $bankAccountAttributes;
 
-    public function populate($data)
+    public function populate(array $data)
     {
         foreach ($data as $property => $value) {
             if(!in_array($property, array('customer', 'product', 'credit_card', 'bank_account'))) {

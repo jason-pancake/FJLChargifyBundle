@@ -11,20 +11,6 @@ class CreditCardAttributes extends PaymentProfileAttributes
     protected $lastFour;
     protected $cardType;
 
-    public function getArrayCopy()
-    {
-        $data = array();
-
-        foreach($this as $key => $value) {
-            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if($value && $value != '') {
-                $data[$keyUscore] = $value;
-            }
-        }
-
-        return $data;
-    }
-
     /**
      * @param mixed $cardType
      */

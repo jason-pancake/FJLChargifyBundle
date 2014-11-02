@@ -2,37 +2,13 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class ProductFamily
+class ProductFamily extends ChargifyResource
 {
     protected $id;
     protected $accountingCode;
     protected $handle;
     protected $name;
     protected $description;
-
-    public function getArrayCopy()
-    {
-        $data = array();
-
-        foreach($this as $key => $value) {
-            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if($value && $value != '') {
-                $data[$keyUscore] = $value;
-            }
-        }
-
-        return $data;
-    }
-
-    public function populate($data)
-    {
-        foreach ($data as $property => $value) {
-            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
-            if (is_callable(array($this, $method))) {
-                $this->$method($value);
-            }
-        }
-    }
 
     /**
      * @param mixed $accountingCode

@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class CustomerAttributes
+class CustomerAttributes extends ChargifyResource
 {
     protected $firstName;
     protected $lastName;
@@ -16,30 +16,6 @@ class CustomerAttributes
     protected $zip;
     protected $country;
     protected $phone;
-
-    public function populate($data)
-    {
-        foreach ($data as $property => $value) {
-            $method = 'set' . str_replace(' ','',ucwords(str_replace('_',' ',$property)));
-            if (is_callable(array($this, $method))) {
-                $this->$method($value);
-            }
-        }
-    }
-
-    public function getArrayCopy()
-    {
-        $data = array();
-
-        foreach($this as $key => $value) {
-            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if($value && $value != '') {
-                $data[$keyUscore] = $value;
-            }
-        }
-
-        return $data;
-    }
 
     /**
      * @param mixed $address

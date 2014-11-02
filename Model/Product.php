@@ -2,7 +2,7 @@
 
 namespace FJL\ChargifyBundle\Model;
 
-class Product
+class Product extends ChargifyResource
 {
     protected $id;
     protected $priceInCents;
@@ -37,7 +37,7 @@ class Product
         $this->productFamily = new ProductFamily();
     }
 
-    public function populate($data)
+    public function populate(array $data)
     {
         foreach ($data as $property => $value) {
             if(!in_array($property, array('product_family'))) {
