@@ -91,5 +91,6 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('6739072', $customers[0]->getId());
         $this->assertEquals('6740379', $customers[1]->getId());
+        $this->assertEquals('6740416', $customers[2]->getId());
     }
 }
