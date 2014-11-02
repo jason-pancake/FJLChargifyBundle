@@ -47,13 +47,43 @@ class CustomerManager extends ResourceManager
         return false;
     }
 
+    public function findCustomerById($id)
+    {
+        //Instantiate the hydrator object
+        $hydrator = new ArraySerializable();
+
+        //Prepare the request
+        $request = $this->client->get( sprintf("/customers/%s.json", $id), array(
+                'Content-Type' => 'application/json',
+            ));
+
+        //Get the response
+        $response = $this->getResponse($request);
+
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
+
+            //Instantiate new customer object
+            $customer = new Customer();
+
+            //Hydrate the subscription object with the response
+            $hydrator->hydrate($json['customer'], $customer);
+
+            return $customer;
+        }
+
+        return false;
+    }
+
     public function findAllCustomers()
     {
         //Instantiate the hydrator object
         $hydrator = new ArraySerializable();
 
         //Prepare the request
-        $request = $this->client->post( '/customers.json', array(
+        $request = $this->client->get( '/customers.json', array(
             'Content-Type' => 'application/json',
         ));
 
