@@ -36,8 +36,8 @@ class WebhookController extends Controller
             //Log a quick message noting success
             $logger->info('Webhook Signature Verified');
 
-            //Create a new event dispatcher
-            $dispatcher   = new EventDispatcher();
+            //Get event dispatcher
+            $dispatcher   = $this->get('event_dispatcher');
 
             //Instantiate a new webhook object with the webhook id, event and payload
             $webhook      = new Webhook($id, $event, $payload);
