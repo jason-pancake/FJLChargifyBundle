@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FJL\ChargifyBundle\Model\Webhook;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class WebhookController extends Controller
 {
