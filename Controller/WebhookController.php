@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class WebhookController extends Controller
 {
-    public function actionHandle(Request $request)
+    public function handlerAction(Request $request)
     {
         //Get the parameters
         $id          = $request->request->get('id', '');
