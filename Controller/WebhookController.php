@@ -117,7 +117,7 @@ class WebhookController extends Controller
             $logger->error('Received Invalid Webhook');
             $logger->error('Webhook Signature: ' . $signature);
             $logger->error('Generated Signature: ' . $validator->generateSignature($requestBody));
-            $logger->error('Webhook Id: ' . $event);
+            $logger->error('Webhook Id: ' . $id);
             $logger->error('Webhook Event: ' . $event);
             $logger->error('Webhook Body: ' . $requestBody);
         }
