@@ -19,7 +19,6 @@ class WebhookController extends Controller
         $payload     = $request->request->get('payload', '');
         $signature   = $request->query->get('signature_hmac_sha_256', '');
         $requestBody = $request->getContent();
-        $sharedKey   = $this->container->getParameter('chargify_secret');
 
         //Log some of the parameters
         $logger = $this->get('logger');
