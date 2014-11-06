@@ -11,13 +11,13 @@ class SignatureValidator
         $this->secret = $secret;
     }
 
-    public function isValid($body, $signature)
+    public function isValidSignature($body, $signature)
     {
         return $this->generateSignature($body, $this->secret) == $signature;
     }
 
-    public function generateSignature($body, $secret)
+    public function generateSignature($body)
     {
-        return hash_hmac('sha256', $body, $secret);
+        return hash_hmac('sha256', $body, $this->secret);
     }
 }

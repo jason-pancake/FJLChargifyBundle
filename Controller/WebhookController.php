@@ -29,15 +29,24 @@ class WebhookController extends Controller
         $logger->info('Webhook Signature: ' . $signature);
         $logger->info('Webhook Body: ' . $requestBody);
 
+        //Get the validator service
+        $validator = $this->get('fjl.chargify.signature_validator');
+
         //Verify signature
-        if (hash_hmac('sha256', $requestBody, $sharedKey) == $signature) {
+        if ($validator->isValidSignature($requestBody, $signature)) {
+            //Log a quick message noting success
             $logger->info('Webhook Signature Verified');
 
+            //Create a new event dispatcher
             $dispatcher   = new EventDispatcher();
+
+            //Instantiate a new webhook object with the webhook id, event and payload
             $webhook      = new Webhook($id, $event, $payload);
+
+            //Instantiate a new webhook event
             $webhookEvent = new WebhookEvent($webhook);
 
-            //Switch on the event
+            //Switch on the event and dispatch the corresponding event
             switch ($event) {
                 case 'signup_success':
                     $dispatcher->dispatch(FJLChargifyEvents::WEBHOOK_SIGNUP_SUCCESS, $webhookEvent);
@@ -109,7 +118,7 @@ class WebhookController extends Controller
             //Log the invalid webhook
             $logger->error('Received Invalid Webhook');
             $logger->error('Webhook Signature: ' . $signature);
-            $logger->error('Generated Signature: ' . hash_hmac('sha256', $requestBody, $sharedKey));
+            $logger->error('Generated Signature: ' . $validator->generateSignature($requestBody));
             $logger->error('Webhook Id: ' . $event);
             $logger->error('Webhook Event: ' . $event);
             $logger->error('Webhook Body: ' . $requestBody);
