@@ -3,6 +3,14 @@ services:
         class: FJL\ChargifyBundle\Model\SubscriptionManager
         arguments: ["@fjl.chargify.client", @logger]
 
+    fjl.chargify.customer_manager:
+        class: FJL\ChargifyBundle\Model\CustomerManager
+        arguments: ["@fjl.chargify.client", @logger]
+
     fjl.chargify.coupon_manager:
         class: FJL\ChargifyBundle\Model\CouponManager
+        arguments: ["@fjl.chargify.client", @logger]
+
+    fjl.chargify.product_manager:
+        class: FJL\ChargifyBundle\Model\ProductManager
         arguments: ["@fjl.chargify.client", @logger]
