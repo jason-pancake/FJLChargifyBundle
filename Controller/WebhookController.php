@@ -4,7 +4,7 @@ namespace FJL\ChargifyBundle\Controller;
 
 use FJL\ChargifyBundle\Event\WebhookEvent;
 use FJL\ChargifyBundle\Model\Webhook;
-use FJLChargifyBundle\FJLChargifyEvents;
+use FJL\ChargifyBundle\FJLChargifyEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
