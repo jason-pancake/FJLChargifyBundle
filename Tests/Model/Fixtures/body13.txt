@@ -1,0 +1,12 @@
+{
+  "allocation":{
+    "component_id":11960,
+    "subscription_id":2585595,
+    "quantity":2,
+    "previous_quantity":18,
+    "memo":"Setting quantity to 2 at customer request",
+    "timestamp":"2012-11-20T23:00:08Z",
+    "proration_upgrade_scheme":"prorate-attempt-capture",
+    "proration_downgrade_scheme":"no-prorate"
+  }
+}
