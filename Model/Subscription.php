@@ -45,6 +45,7 @@ class Subscription extends ChargifyResource
     protected $bankAccount;
     protected $creditCardAttributes;
     protected $bankAccountAttributes;
+    protected $components = array();
 
     public function populate(array $data)
     {
@@ -74,19 +75,34 @@ class Subscription extends ChargifyResource
 
         foreach($this as $key => $value) {
             $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if(!in_array($key, array('customerAttributes', 'customer', 'creditCardAttributes', 'creditCard', 'product', 'bankAccount', 'bankAccountAttributes'))) {
+            if(!in_array($key, array('components', 'customerAttributes', 'customer', 'creditCardAttributes', 'creditCard', 'product', 'bankAccount', 'bankAccountAttributes'))) {
                 if($value && $value != '') {
                     $data['subscription'][$keyUscore] = $value;
                 }
             }
             else {
-                if($this->$key != null) {
+                if($this->$key != null && is_array($this->$key)) {
+                    foreach($this->$key as $item) {
+                        $data['subscription'][$key][] = $item->getArrayCopy();
+                    }
+                }
+                else if($this->$key != null) {
                     $data['subscription'][$keyUscore] = $this->$key->getArrayCopy();
                 }
             }
         }
 
         return $data;
+    }
+
+    public function addComponent(SubscriptionComponentInterface $component)
+    {
+        $this->components[] = $component;
+    }
+
+    public function getComponents()
+    {
+        return $this->components;
     }
 
     /**

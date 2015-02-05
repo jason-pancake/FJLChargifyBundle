@@ -2,7 +2,9 @@
 
 namespace FJL\ChargifyBundle\Tests\Model;
 
+use FJL\ChargifyBundle\Model\SubscriptionComponent;
 use FJL\ChargifyBundle\Model\SubscriptionManager;
+use FJL\ChargifyBundle\Model\SubscriptionQuantityComponent;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Client;
@@ -105,6 +107,12 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $customerAttributes->setFirstName('John');
         $customerAttributes->setLastName('Doe');
         $customerAttributes->setEmail('john@example.com');
+
+        $component = new SubscriptionQuantityComponent();
+        $component->setComponentId('100');
+        $component->setAllocatedQuantity('10');
+
+        $subscription->addComponent($component);
 
         $creditCardAttributes = new CreditCardAttributes();
         $creditCardAttributes->setFullNumber('1');
