@@ -28,7 +28,11 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $mockResponse = new Response(200);
         $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body1.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
+        $mockPlugin->addResponse($mockResponse);
 
+        $mockResponse = new Response(200);
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body14.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
         $mockPlugin->addResponse($mockResponse);
 
         $client = new Client();
@@ -36,12 +40,14 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 
         $subscriptionManager = new SubscriptionManager($client);
         $subscription        = $subscriptionManager->findSubscriptionById('1234567');
+        $components          = $subscription->getComponents();
 
         $this->assertEquals('1234567', $subscription->getId());
         $this->assertEquals('John', $subscription->getCustomer()->getFirstName());
         $this->assertEquals('Sample Plan', $subscription->getProduct()->getName());
         $this->assertEquals('sample-plans', $subscription->getProduct()->getProductFamily()->getHandle());
         $this->assertEquals('XXXX-XXXX-XXXX-1', $subscription->getCreditCard()->getMaskedCardNumber());
+        $this->assertEquals('78928', $components[0]->getComponentId());
     }
 
     public function testFindSubscriptionByIdBankAccount()
@@ -49,10 +55,13 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $mockPlugin = new MockPlugin();
 
         $mockResponse = new Response(200);
-
         $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body2.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
+        $mockPlugin->addResponse($mockResponse);
 
+        $mockResponse = new Response(200);
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body14.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
         $mockPlugin->addResponse($mockResponse);
 
         $client = new Client();
@@ -69,10 +78,8 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $mockPlugin = new MockPlugin();
 
         $mockResponse = new Response(404);
-
         $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body6.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
-
         $mockPlugin->addResponse($mockResponse);
 
         $client = new Client();
@@ -89,7 +96,6 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $mockPlugin = new MockPlugin();
 
         $mockResponse = new Response(201);
-
         $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body3.txt', 'r+'));
         $mockResponse->setBody($mockResponseBody);
 

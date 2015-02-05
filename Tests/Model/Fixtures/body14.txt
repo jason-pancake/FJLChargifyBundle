@@ -1,0 +1,13 @@
+[
+    {
+        "component": {
+            "component_id": 78928,
+            "subscription_id": 7731984,
+            "allocated_quantity": 10,
+            "pricing_scheme": "tiered",
+            "name": "Users",
+            "kind": "quantity_based_component",
+            "unit_name": "user"
+        }
+    }
+]
