@@ -11,7 +11,7 @@ class WebhookEvent extends Event
 
     public function __construct(WebhookInterface $webhook)
     {
-        $this->order = $webhook;
+        $this->webhook = $webhook;
     }
 
     public function getWebhook()

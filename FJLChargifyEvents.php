@@ -1,6 +1,6 @@
 <?php
 
-namespace FJLChargifyBundle;
+namespace FJL\ChargifyBundle;
 
 /**
  * Contains all events thrown in the FOSChargifyBundle

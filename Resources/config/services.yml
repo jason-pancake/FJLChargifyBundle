@@ -17,4 +17,4 @@ services:
 
     fjl.chargify.signature_validator:
         class: FJL\ChargifyBundle\Util\SignatureValidator
-        arguments: ["@chargify_secret"]
+        arguments: ["%chargify_secret%"]

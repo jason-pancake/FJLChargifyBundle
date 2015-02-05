@@ -2,16 +2,16 @@
 
 namespace FJL\ChargifyBundle\Controller;
 
-use FJLChargifyBundle\FJLChargifyEvents;
+use FJL\ChargifyBundle\Event\WebhookEvent;
+use FJL\ChargifyBundle\Model\Webhook;
+use FJL\ChargifyBundle\FJLChargifyEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FJL\ChargifyBundle\Model\Webhook;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class WebhookController extends Controller
 {
-    public function actionHandle(Request $request)
+    public function handlerAction(Request $request)
     {
         //Get the parameters
         $id          = $request->request->get('id', '');
@@ -36,8 +36,8 @@ class WebhookController extends Controller
             //Log a quick message noting success
             $logger->info('Webhook Signature Verified');
 
-            //Create a new event dispatcher
-            $dispatcher   = new EventDispatcher();
+            //Get event dispatcher
+            $dispatcher   = $this->get('event_dispatcher');
 
             //Instantiate a new webhook object with the webhook id, event and payload
             $webhook      = new Webhook($id, $event, $payload);
@@ -118,7 +118,7 @@ class WebhookController extends Controller
             $logger->error('Received Invalid Webhook');
             $logger->error('Webhook Signature: ' . $signature);
             $logger->error('Generated Signature: ' . $validator->generateSignature($requestBody));
-            $logger->error('Webhook Id: ' . $event);
+            $logger->error('Webhook Id: ' . $id);
             $logger->error('Webhook Event: ' . $event);
             $logger->error('Webhook Body: ' . $requestBody);
         }
