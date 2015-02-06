@@ -22,7 +22,6 @@ class AllocationManager extends ResourceManager
         ),
             json_encode( $hydrator->extract($allocation) ) );
 
-
         //Get the response
         $response = $this->getResponse($request);
 

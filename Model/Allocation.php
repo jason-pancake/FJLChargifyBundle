@@ -13,6 +13,19 @@ class Allocation extends ChargifyResource
     protected $prorationUpgradeScheme;
     protected $prorationDowngradeScheme;
 
+    public function getArrayCopy() {
+        $data['allocation'] = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if($value && $value != '') {
+                $data['allocation'][$keyUscore] = $value;
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * @return mixed
      */
