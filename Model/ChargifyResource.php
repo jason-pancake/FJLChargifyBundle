@@ -9,7 +9,7 @@ class ChargifyResource implements ResourceInterface {
 
         foreach($this as $key => $value) {
             $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-            if($value && $value != '') {
+            if(!is_null($value)) {
                 $data[$keyUscore] = $value;
             }
         }
