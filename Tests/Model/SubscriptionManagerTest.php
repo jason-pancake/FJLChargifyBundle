@@ -11,6 +11,7 @@ use Guzzle\Http\Client;
 use Guzzle\Http\EntityBody;
 use FJL\ChargifyBundle\Model\CustomerAttributes;
 use FJL\ChargifyBundle\Model\CreditCardAttributes;
+use FJL\ChargifyBundle\Model\Migration;
 
 class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -190,5 +191,32 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $subscriptionManager->deleteSubscription($subscription);
 
         $this->assertEquals('Canceling the subscription via the API', $subscription->getCancellationMessage());
+    }
+
+    public function testGetMigrationPreview()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body15.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+
+        $migration = new Migration();
+        $migration->setProductHandle('000-my-product');
+
+        $migration = $subscriptionManager->getMigrationPreview(1, $migration);
+
+        $this->assertEquals('-12500', $migration->getProratedAdjustmentInCents());
+        $this->assertEquals('90000', $migration->getChargeInCents());
+        $this->assertEquals('77500', $migration->getPaymentDueInCents());
+        $this->assertEquals('0', $migration->getCreditAppliedInCents());
     }
 }

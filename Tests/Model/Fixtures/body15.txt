@@ -1,0 +1,8 @@
+{
+    "migration":{
+      "prorated_adjustment_in_cents":-12500,
+      "charge_in_cents":90000,
+      "payment_due_in_cents":77500,
+      "credit_applied_in_cents":0
+    }
+}
