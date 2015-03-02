@@ -14,6 +14,19 @@ class Migration extends ChargifyResource
     protected $paymentDueInCents;
     protected $creditAppliedInCents;
 
+    public function getArrayCopy() {
+        $data['migration'] = array();
+
+        foreach($this as $key => $value) {
+            $keyUscore = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+            if(!is_null($value)) {
+                $data['migration'][$keyUscore] = $value;
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * @return mixed
      */
