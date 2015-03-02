@@ -219,4 +219,32 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('77500', $migration->getPaymentDueInCents());
         $this->assertEquals('0', $migration->getCreditAppliedInCents());
     }
+
+    public function testMigrateSubscription()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body16.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+
+        $migration = new Migration();
+        $migration->setProductHandle('000-my-product');
+
+        $subscription = $subscriptionManager->migrateSubscription(1, $migration);
+
+        $this->assertEquals('1234567', $subscription->getId());
+        $this->assertEquals('John', $subscription->getCustomer()->getFirstName());
+        $this->assertEquals('Sample Plan', $subscription->getProduct()->getName());
+        $this->assertEquals('sample-plans', $subscription->getProduct()->getProductFamily()->getHandle());
+        $this->assertEquals('XXXX-XXXX-XXXX-1', $subscription->getCreditCard()->getMaskedCardNumber());
+    }
 }

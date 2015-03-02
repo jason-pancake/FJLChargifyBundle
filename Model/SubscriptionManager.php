@@ -11,6 +11,34 @@ class SubscriptionManager extends ResourceManager
         return new Subscription();
     }
 
+    public function migrateSubscription($id, $migration)
+    {
+        //Instantiate the hydrator object
+        $hydrator = new ArraySerializable();
+
+        //Generate the request
+        $request = $this->client->post('/subscriptions/'.$id.'/migrations.json', array(
+            'Content-Type' => 'application/json',
+        ), json_encode($hydrator->extract($migration)));
+
+        //Get the response
+        $response = $this->getResponse($request);
+
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
+
+            //Hydrate the subscription object with the response
+            $subscription = new Subscription();
+            $hydrator->hydrate($json['subscription'], $subscription);
+
+            return $subscription;
+        }
+
+        return false;
+    }
+
     public function getMigrationPreview($id, $migration)
     {
         //Instantiate the hydrator object
