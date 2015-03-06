@@ -12,6 +12,7 @@ use Guzzle\Http\EntityBody;
 use FJL\ChargifyBundle\Model\CustomerAttributes;
 use FJL\ChargifyBundle\Model\CreditCardAttributes;
 use FJL\ChargifyBundle\Model\Migration;
+use FJL\ChargifyBundle\Model\Reactivation;
 
 class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -246,5 +247,55 @@ class SubscriptionManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Sample Plan', $subscription->getProduct()->getName());
         $this->assertEquals('sample-plans', $subscription->getProduct()->getProductFamily()->getHandle());
         $this->assertEquals('XXXX-XXXX-XXXX-1', $subscription->getCreditCard()->getMaskedCardNumber());
+    }
+
+    public function testReactivateSubscription()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body16.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+
+        $reactivation = new Reactivation();
+        $reactivation->setPreserveBalance('1');
+        $subscription = $subscriptionManager->migrateSubscription(1, $reactivation);
+
+        $this->assertEquals('1234567', $subscription->getId());
+        $this->assertEquals('John', $subscription->getCustomer()->getFirstName());
+        $this->assertEquals('Sample Plan', $subscription->getProduct()->getName());
+        $this->assertEquals('sample-plans', $subscription->getProduct()->getProductFamily()->getHandle());
+        $this->assertEquals('XXXX-XXXX-XXXX-1', $subscription->getCreditCard()->getMaskedCardNumber());
+    }
+
+    public function testGetRenewalPrevies()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body17.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $subscriptionManager = new SubscriptionManager($client);
+
+        $renewalPreview = $subscriptionManager->getRenewalPreview('33');
+
+        $this->assertEquals('12450', $renewalPreview->getTotalDiscountInCents());
+        $this->assertEquals('12450', $renewalPreview->getTotalInCents());
+        $this->assertEquals('24900', $renewalPreview->getSubtotalInCents());
     }
 }

@@ -1,0 +1,30 @@
+{
+    "renewal_preview": {
+        "next_assessment_at": "2015-04-06T15:57:33-04:00",
+        "subtotal_in_cents": 24900,
+        "total_tax_in_cents": 0,
+        "total_discount_in_cents": 12450,
+        "total_in_cents": 12450,
+        "existing_balance_in_cents": 0,
+        "total_amount_due_in_cents": 12450,
+        "uncalculated_taxes": false,
+        "line_items": [
+            {
+                "transaction_type": "charge",
+                "kind": "baseline",
+                "amount_in_cents": 24900,
+                "memo": "Champions Circle (6 Apr 2015 - 6 May 2015)",
+                "discount_amount_in_cents": 12450,
+                "taxable_amount_in_cents": 0
+            },
+            {
+                "transaction_type": "adjustment",
+                "kind": "coupon",
+                "amount_in_cents": -12450,
+                "memo": "Coupon: 50OFF - 50% Off Coupon",
+                "discount_amount_in_cents": 0,
+                "taxable_amount_in_cents": 0
+            }
+        ]
+    }
+}

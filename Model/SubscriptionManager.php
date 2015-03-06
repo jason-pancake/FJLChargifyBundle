@@ -11,6 +11,34 @@ class SubscriptionManager extends ResourceManager
         return new Subscription();
     }
 
+    public function reactivateSubscription($id, Reactivation $reactivation)
+    {
+        //Instantiate the hydrator object
+        $hydrator = new ArraySerializable();
+
+        //Generate the request
+        $request = $this->client->put('/subscriptions/'.$id.'/reactivate.json', array(
+            'Content-Type' => 'application/json',
+        ), json_encode($hydrator->extract($reactivation)));
+
+        //Get the response
+        $response = $this->getResponse($request);
+
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
+
+            //Hydrate the subscription object with the response
+            $subscription = new Subscription();
+            $hydrator->hydrate($json['subscription'], $subscription);
+
+            return $subscription;
+        }
+
+        return false;
+    }
+
     public function migrateSubscription($id, $migration)
     {
         //Instantiate the hydrator object
@@ -34,6 +62,34 @@ class SubscriptionManager extends ResourceManager
             $hydrator->hydrate($json['subscription'], $subscription);
 
             return $subscription;
+        }
+
+        return false;
+    }
+
+    public function getRenewalPreview($id)
+    {
+        //Instantiate the hydrator object
+        $hydrator = new ArraySerializable();
+
+        //Generate the request
+        $request = $this->client->post('/subscriptions/'.$id.'/renewals/preview.json', array(
+            'Content-Type' => 'application/json',
+        ));
+
+        //Get the response
+        $response = $this->getResponse($request);
+
+        //Check for valid response
+        if($response) {
+            //Get JSON
+            $json = $response->json();
+
+            //Hydrate the subscription object with the response
+            $renewalPreview = new RenewalPreview();
+            $hydrator->hydrate($json['renewal_preview'], $renewalPreview);
+
+            return $renewalPreview;
         }
 
         return false;
