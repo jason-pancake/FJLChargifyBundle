@@ -115,6 +115,26 @@ class CustomerManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('6740379', $customer->getId());
     }
 
+    public function testFindCustomerByReference()
+    {
+        $mockPlugin = new MockPlugin();
+
+        $mockResponse = new Response(200);
+
+        $mockResponseBody = EntityBody::factory(fopen(__DIR__.'/Fixtures/body11.txt', 'r+'));
+        $mockResponse->setBody($mockResponseBody);
+
+        $mockPlugin->addResponse($mockResponse);
+
+        $client = new Client();
+        $client->addSubscriber($mockPlugin);
+
+        $customerManager = new CustomerManager($client);
+        $customer = $customerManager->findCustomerByReference('123456');
+
+        $this->assertEquals('6740379', $customer->getId());
+    }
+
     public function testFindCustomerByIdNotFound()
     {
         $mockPlugin = new MockPlugin();
